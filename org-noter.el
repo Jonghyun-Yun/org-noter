@@ -351,7 +351,7 @@ The title used will be the default one."
          (frame-name (format "Emacs Org-noter - %s" display-name))
 
          (document (find-file-noselect document-property-value))
-         (document-path (expand-file-name document-property-value))
+         (document-path (file-truename (expand-file-name document-property-value)))
          (document-major-mode (buffer-local-value 'major-mode document))
          (document-buffer-name
           (generate-new-buffer-name (concat (unless raw-value-not-empty "Org-noter: ") display-name)))
