@@ -67,6 +67,11 @@
   :group 'convenience
   :version "25.3.1")
 
+(defcustom org-noter-use-absolute-filename-for-attachment t
+  "If non-nil, absolute file names will be used for the attached document."
+  :group 'org-noter
+  :type 'boolean)
+
 (defcustom org-noter-property-doc-file "NOTER_DOCUMENT"
   "Name of the property that specifies the document."
   :group 'org-noter
@@ -1289,7 +1294,9 @@ relative to."
                (attach-list (and attach-dir (org-attach-file-list attach-dir))))
           (when (and attach-list (y-or-n-p "Do you want to annotate an attached file?"))
             (setq doc-prop (completing-read "File to annotate: " attach-list nil t))
-            (when doc-prop (setq doc-prop (file-relative-name (expand-file-name doc-prop attach-dir)))))))
+            (when doc-prop (setq doc-prop (if org-noter-use-absolute-filename-for-attachment
+                                              (expand-file-name (expand-file-name doc-prop attach-dir))
+                                            (file-relative-name (expand-file-name doc-prop attach-dir))))))))
 
       (unless (org-noter--check-doc-prop doc-prop)
         (setq doc-prop (expand-file-name
